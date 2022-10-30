@@ -8,7 +8,7 @@ use bevy::prelude::*;
 const ASPECT_RATIO: f32 = 16.0 / 9.0;
 
 fn main() {
-    let height = 900.0;
+    let height = 450.0;
     App::new()
         .insert_resource(WindowDescriptor {
             width: height * ASPECT_RATIO,
@@ -34,7 +34,7 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands.spawn_bundle(Camera2dBundle::default());
     commands
         .spawn_bundle(SpriteBundle {
-            texture: asset_server.load("textures\\xiong.png"),
+            texture: asset_server.load("textures\\bevy.png"),
             transform: Transform::from_xyz(0., 0., 0.),
             ..default()
         })
@@ -50,9 +50,9 @@ fn sprite_movement(time: Res<Time>, mut sprite_position: Query<(&mut Direction, 
             Direction::Down => transform.translation.y -= 150. * time.delta_seconds(),
         }
 
-        if transform.translation.y > 200. {
+        if transform.translation.y - 200.0 > 0.0001 {
             *logo = Direction::Down;
-        } else if transform.translation.y < -200. {
+        } else if transform.translation.y + 200.0 < -0.0001 {
             *logo = Direction::Up;
         }
     }
