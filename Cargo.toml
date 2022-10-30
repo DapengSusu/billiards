@@ -1,16 +1,35 @@
 [package]
 name = "billiards"
 version = "0.1.0"
+authors = ["Jumper <911079536@qq.com>"]
 edition = "2021"
+exclude = ["build", "assets", "credits"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
-[profile.dev]
-opt-level = 1
 
 [profile.dev.package."*"]
 opt-level = 3
 
+[profile.dev]
+opt-level = 1
+
+[profile.release]
+lto = true
+codegen-units = 1
+
+[features]
+dev = [
+    "bevy/dynamic",
+]
+
 [dependencies]
-bevy = { version = "0.8", features = ["dynamic"] }
-# bevy = "0.8"
+bevy = { version = "0.8", default-features = false, features = ["bevy_asset", "bevy_winit", "render", "png", "x11"] }
+bevy_kira_audio = { version = "0.12" }
+bevy_asset_loader = { version = "0.12" }
+
+# keep the following in sync with Bevy's dependencies
+winit = { version = "0.27", default-features = false }
+image = { version = "0.24", default-features = false }
+
+[build-dependencies]
+embed-resource = "1.4"
