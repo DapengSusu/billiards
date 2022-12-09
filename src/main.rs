@@ -10,15 +10,17 @@ const ASPECT_RATIO: f32 = 16.0 / 9.0;
 fn main() {
     let height = 450.0;
     App::new()
-        .insert_resource(WindowDescriptor {
-            width: height * ASPECT_RATIO,
-            height,
-            position: WindowPosition::Automatic,
-            title: "bevy_game".to_string(),
-            resizable: false,
-            ..Default::default()
-        })
-        .add_plugins(DefaultPlugins)
+        .add_plugins(DefaultPlugins.set(WindowPlugin {
+            window: WindowDescriptor {
+                width: height * ASPECT_RATIO,
+                height,
+                position: WindowPosition::Automatic,
+                title: "bevy_game".to_string(),
+                resizable: false,
+                ..Default::default()
+            },
+            ..default()
+        }))
         .add_startup_system(setup)
         .add_system(sprite_movement)
         .run();
@@ -31,9 +33,9 @@ enum Direction {
 }
 
 fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
-    commands.spawn_bundle(Camera2dBundle::default());
+    commands.spawn(Camera2dBundle::default());
     commands
-        .spawn_bundle(SpriteBundle {
+        .spawn(SpriteBundle {
             texture: asset_server.load("textures\\bevy.png"),
             transform: Transform::from_xyz(0., 0., 0.),
             ..default()
